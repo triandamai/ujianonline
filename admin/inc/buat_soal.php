@@ -46,7 +46,7 @@
 <?php
 if(@$_GET['hal'] == "soalpilgan") { ?>
 		<div class="row">
-	<div style="padding: 0 15px;" class="panel panel-default">
+		<div style="padding: 0 15px;" class="panel panel-default">
 			<!-- Buat sebuah tombol Cancel untuk kemabli ke halaman awal / view data -->
 			<a href="index.php" class="btn btn-danger pull-right">
 				<span class="glyphicon glyphicon-remove"></span> Cancel

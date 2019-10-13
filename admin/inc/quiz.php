@@ -191,13 +191,15 @@ if(@$_GET['action'] == '') { ?>
                         var status = $("#status").val();
                         var pembuat = "<?php echo $pembuat; ?>";
                         var ke =  $('.wadah_kelas > div > select').length;
+						var waktuParse= parseInt(waktu_soal);
                         for(var i = 1; i <= ke; i++) {
                             var kelas = $("#ke-"+i+" > select.x").val();
                             $.ajax({
                                 url : 'inc/save_quiz.php',
                                 type : 'post',
-                                data : 'judul='+judul+'&mapel='+mapel+'&tgl_buat='+tgl_buat+'&waktu_soal='+waktu_soal+'&info='+info+'&status='+status+'&pembuat='+pembuat+'&kelas='+kelas,
+                                data : 'judul='+judul+'&mapel='+mapel+'&tgl_buat='+tgl_buat+'&waktu_soal='+waktuParse+'&info='+info+'&status='+status+'&pembuat='+pembuat+'&kelas='+kelas,
                                 success : function(msg) {
+									console.log(msg);
                                     $("#hasil").html(msg);
                                 }
                             });

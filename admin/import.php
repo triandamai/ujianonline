@@ -23,7 +23,7 @@
 		$nama_file_baru = 'data.xlsx';
 		$id_tq = $_POST['id_tq'];
 		// Load librari PHPExcel nya
-		require_once $_SERVER['DOCUMENT_ROOT'].'/bakti/ujianonline/admin/'.'PHPExcel/PHPExcel.php';
+		require_once $_SERVER['DOCUMENT_ROOT'].'/ujianonline/admin/'.'PHPExcel/PHPExcel.php';
 	
 		$excelreader = new PHPExcel_Reader_Excel2007();
 		$loadexcel = $excelreader->load('tmp/'.$nama_file_baru); // Load file excel yang tadi diupload ke folder tmp
