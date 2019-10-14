@@ -79,7 +79,7 @@ if(@$_GET['hal'] == "pilgan") { ?>
 											<td>
 												<?php
 												if($data_pilgan['gambar'] != '') {
-													echo '<img src="img/gambar_soal_pilgan/'.$data_pilgan['gambar'].'" width="200px" />';
+													echo '<img src="../admin/img_soal/'.$data_pilgan['gambar'].'" width="200px" />';
 												} else {
 													echo "<i>Tidak ada gambar</i>";
 												} ?>
@@ -304,7 +304,7 @@ if(@$_GET['hal'] == "pilgan") { ?>
 					$kunci = @mysqli_real_escape_string($db, $_POST['kunci']);
 
 					$sumber = @$_FILES['gambar']['tmp_name'];
-					$target = 'img/gambar_soal_pilgan/';
+					$target = 'img_soal/';
 					$nama_gambar = @$_FILES['gambar']['name'];
 
 					if(@$_GET['gbr'] == 'del') {

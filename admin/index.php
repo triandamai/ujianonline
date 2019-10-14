@@ -144,6 +144,9 @@ if(@$_SESSION['admin'] || @$_SESSION['pengajar']) {
                     <li>
                         <a class="<?php if(@$_GET['page'] == 'materi') { echo 'active-menu'; } ?>" href="?page=materi"><i class="fa fa-qrcode"></i> Materi</a>
                     </li>
+					<li>
+                        <a class="<?php if(@$_GET['page'] == 'nilai') { echo 'active-menu'; } ?>" href="?page=nilai"><i class="fa fa-qrcode"></i> Nilai</a>
+                    </li>
                     <li>
                         <a class="<?php if(@$_GET['page'] == 'berita') { echo 'active-menu'; } ?>" href="?page=berita"><i class="fa fa-desktop"></i> Berita</a>
                     </li>
@@ -173,7 +176,9 @@ if(@$_SESSION['admin'] || @$_SESSION['pengajar']) {
                     include "inc/materi.php";
                 } else if(@$_GET['page'] == 'berita') {
                     include "inc/berita.php";
-                } else {
+                } elseif(@$_GET['page'] == 'nilai'){
+					include "inc/nilai.php";
+				}else {
                     echo "<div class='col-xs-12'><div class='alert alert-danger'>[404] Halaman tidak ditemukan! Silahkan pilih menu yang ada!</div></div>";
                 } ?>
                 

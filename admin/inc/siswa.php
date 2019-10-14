@@ -30,8 +30,7 @@ if(@$_GET['action'] == '') {
                 <div class="panel-heading">
 				<a href="?page=siswa&action=tambah" class="btn btn-primary btn-sm">Tambah Data</a>
 			<a href="?page=siswa&action=import" class="btn btn-primary btn-sm">Import</a>
-			<a href="http://localhost/ujianonline/admin/data_export_pengajar.php" class="btn btn-primary btn-sm">Export</a>
-			<a href="./laporan/cetak.php?data=pengajar" target="_blank" class="btn btn-default btn-sm">Cetak Data Pengajar</a>
+			<a href="http://localhost/ujianonline/admin/data_export_siswa.php" class="btn btn-primary btn-sm">Export</a>
                 <?php
                 if(@$_GET['IDkelas'] == '') {
                     echo 'Data Siswa yang Aktif &nbsp; <a href="./laporan/cetak.php?data=siswa" target="_blank" class="btn btn-default btn-xs">Cetak Data Siswa</a>';
@@ -339,7 +338,7 @@ if(@$_GET['action'] == '') {
 
 		<!-- Buat sebuah tag form dan arahkan action nya ke file ini lagi -->
 		<form method="post" action="" enctype="multipart/form-data">
-			<a href="Format.xlsx" class="btn btn-default">
+			<a href="http://localhost/ujianonline/admin/format/format_data_siswa.xlsx" class="btn btn-default">
 				<span class="glyphicon glyphicon-download"></span>
 				Download Format
 			</a><br><br>
@@ -362,7 +361,7 @@ if(@$_GET['action'] == '') {
 		// Jika user telah mengklik tombol Preview
 		if(isset($_POST['preview'])){
 			//$ip = ; // Ambil IP Address dari User
-			$nama_file_baru = 'data_pengajar.xlsx';
+			$nama_file_baru = 'data_siswa.xlsx';
 
 			// Cek apakah terdapat file data.xlsx pada folder tmp
 			if(is_file('tmp/'.$nama_file_baru)) // Jika file tersebut ada
@@ -386,7 +385,7 @@ if(@$_GET['action'] == '') {
 				$loadexcel = $excelreader->load('tmp/'.$nama_file_baru); // Load file yang tadi diupload ke folder tmp
 				$sheet = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
 
-				echo "<form method='post' action='http://localhost/ujianonline/admin/import_pengajar.php'>";
+				echo "<form method='post' action='http://localhost/ujianonline/admin/import_siswa.php'>";
 
 				// Buat sebuah div untuk alert validasi kosong
 				echo "<div class='alert alert-danger' id='kosong'>

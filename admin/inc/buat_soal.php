@@ -57,7 +57,7 @@ if(@$_GET['hal'] == "soalpilgan") { ?>
 
 			<!-- Buat sebuah tag form dan arahkan action nya ke file ini lagi -->
 			<form method="post" action="" enctype="multipart/form-data">
-				<a href="Format.xlsx" class="btn btn-default">
+				<a href="http://localhost/ujianonline/admin/format/format_data_soal.xlsx" class="btn btn-default">
 					<span class="glyphicon glyphicon-download"></span>
 					Download Format
 				</a><br><br>
