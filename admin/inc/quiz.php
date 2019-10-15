@@ -313,4 +313,6 @@ if(@$_GET['action'] == '') { ?>
     mysqli_query($db, "DELETE FROM tb_nilai_pilgan WHERE id_tq = '$_GET[id_tq]' AND id_siswa = '$_GET[id_siswa]'") or die ($db->error);
     mysqli_query($db, "DELETE FROM tb_nilai_essay WHERE id_tq = '$_GET[id_tq]' AND id_siswa = '$_GET[id_siswa]'") or die ($db->error);
     echo "<script>window.location='?page=quiz&action=pesertakoreksi&id_tq=".@$_GET['id_tq']."';</script>";
+}else if(@$_GET['action' == "preview"]){
+	include "preview_soal.php";
 } ?>

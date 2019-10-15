@@ -1,5 +1,6 @@
 <?php
 $db = mysqli_connect("localhost", "root", "", "db_elearning");
+//$db = mysqli_connect("localhost", "projekus_trian", "asdf1998Buka", "projekus_ujianonline");
 
 //---fungsi2---//
 function cek_session($isi_admin, $isi_pengajar) {

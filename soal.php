@@ -416,7 +416,7 @@ Vue.component('form-soal', {
            console.log(lsj.jawaban);
 		  
             this.jawaban = lsj.jawaban
-            this.isDisabled = true;
+            this.isDisabled = false;
         }else{
              this.isDisabled = false;
 			 

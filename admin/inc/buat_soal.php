@@ -55,24 +55,144 @@ if(@$_GET['hal'] == "soalpilgan") { ?>
 			<h3>Form Import Data</h3>
 			<hr>
 
-			<!-- Buat sebuah tag form dan arahkan action nya ke file ini lagi -->
-			<form method="post" action="" enctype="multipart/form-data">
+	
 				<a href="http://localhost/ujianonline/admin/format/format_data_soal.xlsx" class="btn btn-default">
 					<span class="glyphicon glyphicon-download"></span>
 					Download Format
 				</a><br><br>
 
-				<!--
-				-- Buat sebuah input type file
-				-- class pull-left berfungsi agar file input berada di sebelah kiri
-				-->
-				<input type="file" name="file" class="pull-left">
+				<input id="file" type="file" name="file" class="pull-left" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
 
-				<button type="submit" name="preview" class="btn btn-success btn-sm">
-					<span class="glyphicon glyphicon-eye-open"></span> Preview
-				</button>
-			</form>
+				<button id="preview" type="button" name="preview" class="btn btn-success btn-sm">
+					<span class="glyphicon glyphicon-eye-open"></span> Preview</button>
 
+					<div class="dropdown-divider"></div>
+					
+			<div id="form">
+			</div>
+			
+			<script type="text/javascript">
+			
+				$('#preview').on('click',()=>{
+					var file_data = $('#file').prop('files')[0];
+					var form_data = new FormData();
+					form_data.append('file',file_data);
+					form_data.append('preview',"ya");
+					var html;
+					
+					var wadah = document.getElementById("#form");
+        
+					$.ajax({
+        					url: 'http://localhost/ujianonline/admin/preview_soal.php', // point to server-side PHP script 
+        					dataType: 'text',  // what to expect back from the PHP script, if anything
+        					cache: false,
+        					contentType: false,
+        					processData: false,
+        					data: form_data,                         
+        					type: 'post',
+        			success: function(res){
+            			//alert(php_script_response);
+						console.log(res); // display response from the PHP script, if any
+						var data_json = JSON.parse(res);
+						if(JSON.parse(res).success == true){
+							var i =1;
+							for(i = 1; i < JSON.parse(res).data.length ;i++){
+								//console.log(i);
+								if(data_json.data[i].I == "ya"){
+									html +='<div class="card">'+
+								'<div class="card-header"><h3>Soal No.'+data_json.data[i].A+'</h3></div>'+
+								'<div class="card-body container">'+
+									'<br><p>Masukkan Gambar soal</p>'+									
+									'<input id="file'+i+'" type="file" name="file'+i+'" onchange="functionSaya(event,'+i+')" accept="image/*">'+
+									'<p class="card-text">'+data_json.data[i].B+'</p>'+
+									'<h5 class="card-title"> Kunci Jawaban'+data_json.data[i].H+'</h5>'+
+									'<div class="row">'+
+										'<div class="col-md-6">'+
+											'<p>A.'+data_json.data[i].C+'</p>'+
+											'<p>A.'+data_json.data[i].D+'</p>'+
+											'<p>A.'+data_json.data[i].E+'</p>'+
+										'</div>'+
+										'<div class="col-md-6">'+
+											'<p>A.'+data_json.data[i].F+'</p>'+
+											'<p>A.'+data_json.data[i].G+'</p>'+
+										'</div>'+
+									'</div>'+
+								'</div>'+
+							'</div>';
+
+								}else{
+								html +='<div class="card">'+
+								'<div class="card-header"><h3>Soal No.'+data_json.data[i].A+'</h3></div>'+
+								'<div class="card-body container">'+
+									'<p class="card-text">'+data_json.data[i].B+'</p>'+
+									'<h5 class="card-title"> Kunci Jawaban'+data_json.data[i].H+'</h5>'+
+									'<div class="row">'+
+										'<div class="col-md-6">'+
+											'<p>A.'+data_json.data[i].C+'</p>'+
+											'<p>A.'+data_json.data[i].D+'</p>'+
+											'<p>A.'+data_json.data[i].E+'</p>'+
+										'</div>'+
+										'<div class="col-md-6">'+
+											'<p>A.'+data_json.data[i].F+'</p>'+
+											'<p>A.'+data_json.data[i].G+'</p>'+
+										'</div>'+
+									'</div>'+
+								'</div>'+
+							'</div>';
+								}
+								
+							}
+							html += '<form method="post" action="http://localhost/ujianonline/admin/import.php"><input type="hidden" name="id_tq" value="<?php echo $_GET['id']?>"><input type="hidden" name="import" value="ya"><button id="preview" type="submit" name="preview" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-eye-open"></span>Simpan</button></form>';
+							$('#form').append(html);
+					
+						}
+       				 }
+     				});
+				});
+				function functionSaya(evt,i){
+					
+									var f = evt.target.files[0]; // FileList object
+									var reader = new FileReader();
+									//document.getElementById('file'+i).style.display == "none";
+									// Closure to capture the file information.
+									reader.onload = (function(theFile) {
+	  								return function(e) {
+										var binaryData = e.target.result;
+										//Converting Binary Data to base 64
+										var base64String = window.btoa(binaryData);
+										//showing file converted to base64
+										var data = {
+											"img" : base64String,
+											"namafile" : "<?php echo $_GET['id']?>"+i
+										}
+										
+										$.ajax({
+		url: "http://localhost/ujianonline/admin/save_image.php",
+		//mengirimkan username dan password ke script login.php
+		data: data,
+		//Method pengiriman
+		type: "POST",
+
+		//Respon jika data berhasil dikirim
+		success: response => {
+			var data = JSON.parse(response);
+			if (data.success) {
+				console.log(data);
+				
+			} else {
+				console.log(data);
+			}
+		}
+	});
+								
+									//  document.getElementById('base64<?php echo $no?>').value = base64String;
+									  };
+									  })(f);
+									// Read in the image file as a data URL.
+									reader.readAsBinaryString(f);
+  								}
+				
+			</script>
 			<hr>
 
 			<!-- Buat Preview Data -->

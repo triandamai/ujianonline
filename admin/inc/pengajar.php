@@ -266,8 +266,7 @@ if(@$_SESSION['admin']) { ?>
 			<h3>Form Import Data</h3>
 			<hr>
 
-			<!-- Buat sebuah tag form dan arahkan action nya ke file ini lagi -->
-			<form method="post" action="" enctype="multipart/form-data">
+			
 				<a href="http://localhost/ujianonline/admin/format/format_data_pengajar.xlsx" class="btn btn-default">
 					<span class="glyphicon glyphicon-download"></span>
 					Download Format
@@ -277,52 +276,15 @@ if(@$_SESSION['admin']) { ?>
 				-- Buat sebuah input type file
 				-- class pull-left berfungsi agar file input berada di sebelah kiri
 				-->
-				<input type="file" name="file" class="pull-left">
+				<input id="file" type="file" name="file" class="pull-left">
 
-				<button type="submit" name="preview" class="btn btn-success btn-sm">
+				<button id="preview" type="submit" name="preview" class="btn btn-success btn-sm">
 					<span class="glyphicon glyphicon-eye-open"></span> Preview
 				</button>
-			</form>
+			
 
 			<hr>
-
-			<!-- Buat Preview Data -->
-			<?php
-			// Jika user telah mengklik tombol Preview
-			if(isset($_POST['preview'])){
-				//$ip = ; // Ambil IP Address dari User
-				$nama_file_baru = 'data_pengajar.xlsx';
-
-				// Cek apakah terdapat file data.xlsx pada folder tmp
-				if(is_file('tmp/'.$nama_file_baru)) // Jika file tersebut ada
-					unlink('tmp/'.$nama_file_baru); // Hapus file tersebut
-
-				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION); // Ambil ekstensi filenya apa
-				$tmp_file = $_FILES['file']['tmp_name'];
-
-				// Cek apakah file yang diupload adalah file Excel 2007 (.xlsx)
-				if($ext == "xlsx"){
-					// Upload file yang dipilih ke folder tmp
-					// dan rename file tersebut menjadi data{ip_address}.xlsx
-					// {ip_address} diganti jadi ip address user yang ada di variabel $ip
-					// Contoh nama file setelah di rename : data127.0.0.1.xlsx
-					move_uploaded_file($tmp_file, 'tmp/'.$nama_file_baru);
-
-					// Load librari PHPExcel nya
-					require_once $_SERVER['DOCUMENT_ROOT'].'/ujianonline/admin/PHPExcel/PHPExcel.php';
-
-					$excelreader = new PHPExcel_Reader_Excel2007();
-					$loadexcel = $excelreader->load('tmp/'.$nama_file_baru); // Load file yang tadi diupload ke folder tmp
-					$sheet = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
-
-					echo "<form method='post' action='http://localhost/ujianonline/admin/import_pengajar.php'>";
-
-					// Buat sebuah div untuk alert validasi kosong
-					echo "<div class='alert alert-danger' id='kosong'>
-					Semua data belum diisi, Ada <span id='jumlah_kosong'></span> data yang belum diisi.
-					</div>";
-
-					echo "<table class='table table-bordered'>
+			<table class='table table-bordered'>
 					<tr>
 						<th colspan='6' class='text-center'>Preview Data</th>
 					</tr>
@@ -333,137 +295,78 @@ if(@$_SESSION['admin']) { ?>
 						<th>Jabatan</th>
 						<th>Detail</th>
 						<th>Otorisasi</th>
-					</tr>";
+					</tr>
+					<tbody id="table">
+					</tbody>
+					</table>
+					<form id="hide" method="post" action="http://localhost/ujianonline/admin/import_pengajar.php"><input type="hidden" name="id_tq" ><input type="hidden" name="import" value="ya"><button id="preview" type="submit" name="preview" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-eye-open"></span>Simpan</button></form>
+			<script type="text/javascript">
+			$(document).ready(function() {
 
-					$numrow = 1;
-					$kosong = 0;
-					//var_dump(json_encode($sheet));
-					foreach($sheet as $row){
-						 // Lakukan perulangan dari data yang ada di excel
-						// Ambil data pada excel sesuai Kolom
+				//DOM manipulation code
+				$('#hide').hide();
 
-						$nip = $row['B'];
-						$nama_lengkap = $row['C'];
-						$tempat_lahir = $row['D'];
-						$tgl_lahir = $row['E'];
-						$jenis_kelamin = $row['F'];
-						$agama = $row['G'];
-						$no_telp = $row['H'];
-						$email = $row['I'];
-						$alamat = $row['J'];
-						$jabatan = $row['K'];
-						$foto = $row['L'];
-						$web = $row['M'];
-						$username = $row['N'];
-						$password = $row['O'];
-						// $pass = $row['P'];
-						$status = $row['P'];
-						// Cek jika semua data tidak diisi
-						if($nip == "" 
-							&& $nama_lengkap == "" 
-							&& $tempat_lahir == "" 
-							&& $tgl_lahir == "" 
-							&& $jenis_kelamin == ""
-							&& $agama == ""
-							&& $no_telp == ""
-							&& $email == ""
-							&& $alamat == ""
-							&& $jabatan == ""
-							&& $foto == ""
-							&& $web == ""
-							&& $username == ""
-							&& $password == ""
-							&& $status == "")
-							continue; // Lewat data pada baris ini (masuk ke looping selanjutnya / baris selanjutnya)
-
-						// Cek $numrow apakah lebih dari 1
-						// Artinya karena baris pertama adalah nama-nama kolom
-						// Jadi dilewat saja, tidak usah diimport
-						if($numrow > 1){
-							// Validasi apakah semua data telah diisi
-							$vnip = ( ! empty($nip))? "" : " style='background: #E07171;'"; // Jika NIS kosong, beri warna merah
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-
-							// //Jika salah satu data ada yang kosong
-							// if($nip == ""
-							// or $ == ""
-							// or $j_a == ""
-							// or $j_b == ""
-							// or $j_c == ""
-							// or $j_d == ""
-							// or $j_e == ""
-							// or $kunci == ""
-							// or $gambar == ""){
-							// 	$kosong++; // Tambah 1 variabel $kosong
-							// }
-							echo "<tr>";
-							echo "<td>No</td>";
-							echo "<td".$vnip.">".$nip."</td>";
-							echo "<td> ".$nama_lengkap." </td>";
-							echo "<td> ".$jabatan." </td>";
-							echo "<td>Tempat/Tanggal Lahir :".$tempat_lahir."/"
-							.$tgl_lahir."<br>"
-							.$jenis_kelamin."<br>"
-							.$agama."<br>"
-							.$no_telp."<br>"
-							.$email."<br>"
-							.$alamat."<br>"
-							.$jabatan."<br>"
-							.$foto."</td>";
-							echo "<td> Status :".$status.
-							"<br> Website :".$web.
-							"<br> Username :".$username.
-							"<br> Password :".$password."</td>";
-							echo "</tr>";
-							?>
-
-							<?php
+			});
+			$('#preview').on('click',()=>{
+			
+				console.log("click");
+					var file_data = $('#file').prop('files')[0];
+					var form_data = new FormData();
+					form_data.append('file',file_data);
+					form_data.append('preview',"ya");
+					var html;
+					
+					var wadah = document.getElementById("#form");
+        
+					$.ajax({
+        					url: 'http://localhost/ujianonline/admin/preview_pengajar.php', // point to server-side PHP script 
+        					dataType: 'text',  // what to expect back from the PHP script, if anything
+        					cache: false,
+        					contentType: false,
+        					processData: false,
+        					data: form_data,                         
+        					type: 'post',
+        			success: function(res){
+            			//alert(php_script_response);
+						console.log(res); // display response from the PHP script, if any
+						var data_json = JSON.parse(res);
+						console.log(JSON.parse(res));
+						if(JSON.parse(res).success == true){
+							$('#hide').show();
+							var i =1;
+							for(i = 1; i < JSON.parse(res).data.length ;i++){
+								
+									html +='<tr>'+
+									'<td>'+data_json.data[i].A+'</td>'+
+									'<td>'+data_json.data[i].B+'</td>'+
+									'<td>'+data_json.data[i].C+'</td>'+
+									'<td>'+data_json.data[i].D+'</td>'+
+									'<td>Tempat/Tanggal Lahir : '+data_json.data[i].D+'/'+data_json.data[i].E+
+									'<br>Jenis Kelamin : '+data_json.data[i]+
+									'<br>Agama : '+data_json.data[i].G+
+									'<br>No Telp : '+data_json.data[i].H+
+									'<br>Email : '+data_json.data[i].I+
+									'<br>Alamat : '+data_json.data[i].J+
+									'<td>Jabatan : '+data_json.data[i].K+
+									'<br>Status : '+data_json.data[i].P+
+									'<br>Website : '+data_json.data[i].M+
+									'<br>Username : '+data_json.data[i].N+
+									'<br> Password :'+data_json.data[i].P+
+									'</td>'+
+						'</tr>';	
+							}
+							
+							
+							$('#table').append(html);
+					
 						}
-
-						$numrow++; // Tambah 1 setiap kali looping
-					}
-					echo "</table>";
-
-					// Cek apakah variabel kosong lebih dari 1
-					// Jika lebih dari 1, berarti ada data yang masih kosong
-					if($kosong > 1){
-					?>
-						<script>
-						$(document).ready(function(){
-							// Ubah isi dari tag span dengan id jumlah_kosong dengan isi dari variabel kosong
-							$("#jumlah_kosong").html('<?php echo $kosong; ?>');
-
-							$("#kosong").show(); // Munculkan alert validasi kosong
-						});
-						</script>
-					<?php
-					}else{ // Jika semua data sudah diisi
-						echo "<hr>";
-
-						// Buat sebuah tombol untuk mengimport data ke database
-						echo "<button type='submit' name='import' class='btn btn-primary'><span class='glyphicon glyphicon-upload'></span> Import</button>";
-					}
-
-					echo "</form>";
-
-				}else{ // Jika file yang diupload bukan File Excel 2007 (.xlsx)
-					// Munculkan pesan validasi
-					echo "<div class='alert alert-danger'>
-					Hanya File Excel 2007 (.xlsx) yang diperbolehkan
-					</div>";
-				}
-			}
-			?>
+       				 }
+     				});
+				});
+			</script>
+					
+					
+		
 		</div>
 	</div>
 		<?php
