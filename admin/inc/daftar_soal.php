@@ -58,8 +58,12 @@ if(@$_GET['hal'] == "pilgan") { ?>
 			<div class="panel-body">
 				<div class="table-responsive">
 				<?php
+				
 				if(mysqli_num_rows($sql_pilgan) > 0) {
-					while($data_pilgan = mysqli_fetch_array($sql_pilgan)) { ?>
+					while($data_pilgan = mysqli_fetch_array($sql_pilgan)) { 
+						
+						?>
+					
 					<table width="100%">
 						<tr>
 							<td valign="top">Soal no. ( <?php echo $no++; ?> )</td>
@@ -88,27 +92,132 @@ if(@$_GET['hal'] == "pilgan") { ?>
 										<tr>
 											<td>Pilihan A</td>
 											<td>:</td>
-											<td><?php echo $data_pilgan['pil_a']; ?></td>
+											<td><?php echo $data_pilgan['pil_a']; ?><br>
+											<?php
+												if($data_pilgan['image_a'] != '') {
+													echo '<img src="../img_soal/'.$data_pilgan['image_a'].'" width="200px" />';
+												} else {
+													//echo "<i>Tidak ada gambar</i>";
+												} ?>
+												<br>
+												Upload gambar :
+												<br>
+												<input accept="image/*" id="gambar_a<?php echo $data_pilgan['id_pilgan']?>" type="file" name="gambar_a<?php echo $data_pilgan['id_pilgan']?>">
+												<?php
+												if($data_pilgan['audio_a'] != '') {
+													echo '<audio src="../img_soal/'.$data_pilgan['audio_a'].'" controls></audio>';
+												} else {
+													//echo "<i>Tidak ada audio</i>";
+												} ?>
+												<br>
+												Upload audio :
+												<br>
+												<input accept="audio/*" id="audio_a<?php echo $data_pilgan['id_pilgan']?>" type="file" name="audio_a<?php echo $data_pilgan['id_pilgan']?>">
+											</td>
 										</tr>
 										<tr>
 											<td>Pilihan B</td>
 											<td>:</td>
-											<td><?php echo $data_pilgan['pil_b']; ?></td>
+											<td><?php echo $data_pilgan['pil_b']; ?><br>
+											<?php
+												if($data_pilgan['image_b'] != '') {
+													echo '<img src="../img_soal/'.$data_pilgan['image_b'].'" width="200px" />';
+												} else {
+													//echo "<i>Tidak ada gambar</i>";
+												} ?>
+												<br>
+												Upload gambar :
+												<br>
+												<input accept="image/*" id="gambar_b<?php echo $data_pilgan['id_pilgan']; ?>" type="file" name="gambar_b<?php echo $data_pilgan['id_pilgan']; ?>">
+												<?php
+												if($data_pilgan['audio_b'] != '') {
+													echo '<audio src="../img_soal/'.$data_pilgan['audio_b'].'" controls></audio>>';
+												} else {
+													//echo "<i>Tidak ada audio</i>";
+												} ?>
+												<br>
+												Upload audio :
+												<br>
+												<input accept="audio/*" id="audio_b<?php echo $data_pilgan['id_pilgan']?>" type="file" name="audio_b<?php echo $data_pilgan['id_pilgan']?>">
+											</td>
 										</tr>
 										<tr>
 											<td>Pilihan C</td>
 											<td>:</td>
-											<td><?php echo $data_pilgan['pil_c']; ?></td>
+											<td><?php echo $data_pilgan['pil_c']; ?><br>
+											<?php
+												if($data_pilgan['image_c'] != '') {
+													echo '<img src="../img_soal/'.$data_pilgan['image_c'].'" width="200px" />';
+												} else {
+													echo "<i>Tidak ada gambar</i>";
+												} ?>
+												<br>
+												Upload gambar :
+												<br>
+												<input accept="image/*" id="gambar_c<?php echo $data_pilgan['id_pilgan']?>" type="file" name="gambar_c<?php echo $data_pilgan['id_pilgan']; ?>">
+												<?php
+												if($data_pilgan['audio_c'] != '') {
+													echo '<audio src="../img_soal/'.$data_pilgan['audio_c'].'" controls></audio>';
+												} else {
+													//echo "<i>Tidak ada audio</i>";
+												} ?>
+												<br>
+												Upload audio :
+												<br>
+												<input accept="audio/*" id="audio_c<?php echo $data_pilgan['id_pilgan']?>" type="file" name="audio_c<?php echo $data_pilgan['id_pilgan']?>">
+											</td>
 										</tr>
 										<tr>
 											<td>Pilihan D</td>
 											<td>:</td>
-											<td><?php echo $data_pilgan['pil_d']; ?></td>
+											<td><?php echo $data_pilgan['pil_d']; ?><br>
+											<?php
+												if($data_pilgan['image_d'] != '') {
+													echo '<img src="../img_soal/'.$data_pilgan['image_d'].'" width="200px" />';
+												} else {
+													//echo "<i>Tidak ada gambar</i>";
+												} ?>
+												<br>
+												Upload gambar :
+												<br>
+												<input accept="image/*" id="gambar_d<?php echo $data_pilgan['id_pilgan']?>" type="file" name="gambar_d<?php echo $data_pilgan['id_pilgan']; ?>">
+												<?php
+												if($data_pilgan['audio_d'] != '') {
+													echo '<audio src="../img_soal/'.$data_pilgan['audio_d'].'" controls></audio>';
+												} else {
+													//echo "<i>Tidak ada audio</i>";
+												} ?>
+												<br>
+												Upload audio :
+												<br>
+												<input accept="audio/*" id="audio_d<?php echo $data_pilgan['id_pilgan']?>" type="file" name="audio_d<?php echo $data_pilgan['id_pilgan']?>">
+											</td>
 										</tr>
 										<tr>
 											<td>Pilihan E</td>
 											<td>:</td>
-											<td><?php echo $data_pilgan['pil_e']; ?></td>
+											<td><?php echo $data_pilgan['pil_e']; ?><br>
+											<?php
+												if($data_pilgan['image_e'] != '') {
+													echo '<img src="../img_soal/'.$data_pilgan['image_e'].'" width="200px" />';
+												} else {
+													//echo "<i>Tidak ada gambar</i>";
+												} ?>
+												<br>
+												Upload gambar :
+												<br>
+												<input accept="image/*" id="gambar_e<?php echo $data_pilgan['id_pilgan']?>" type="file" name="gambar_e<?php echo $data_pilgan['id_pilgan']; ?>">
+												<?php
+												if($data_pilgan['audio_e'] != '') {
+													echo '<audio src="../img_soal/'.$data_pilgan['audio_e'].'" controls></audio>';
+												} else {
+													//echo "<i>Tidak ada audio</i>";
+												} ?>
+												<br>
+												Upload audio :
+												<br>
+												<input accept="audio/*" id="audio_e<?php echo $data_pilgan['id_pilgan']?>" type="file" name="audio_e<?php echo $data_pilgan['id_pilgan']?>">
+											</td>
 										</tr>
 										<tr>
 											<td>Kunci</td>
@@ -128,7 +237,109 @@ if(@$_GET['hal'] == "pilgan") { ?>
 							</td>
 						</tr>
 					</table>
-					
+					<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+					<script type="text/javascript">
+						$(document).ready(function (e) {
+							
+							$("#gambar_a<?php echo $data_pilgan['id_pilgan']?>").change(function() {
+        						//alert('changed!');
+								//e.preventDefault();
+								save_image('#gambar_a',<?php echo $data_pilgan['id_pilgan']?>,'image_a');
+							});
+							$("#audio_a<?php echo $data_pilgan['id_pilgan']?>").change(function() {
+        						//alert('changed!');
+								//e.preventDefault();
+								save_image('#audio_a',<?php echo $data_pilgan['id_pilgan']?>,'audio_a');
+							});
+														
+							$("#gambar_b<?php echo $data_pilgan['id_pilgan']?>").change(function() {
+        						//alert('changed!');
+								//e.preventDefault();
+								save_image('#gambar_b',<?php echo $data_pilgan['id_pilgan']?>,'image_b');
+							});
+							$("#audio_b<?php echo $data_pilgan['id_pilgan']?>").change(function() {
+        						//alert('changed!');
+								//e.preventDefault();
+								save_image('#audio_b',<?php echo $data_pilgan['id_pilgan']?>,'audio_b');
+							});
+														
+							$("#gambar_c<?php echo $data_pilgan['id_pilgan']?>").change(function() {
+        						//alert('changed!');
+								//e.preventDefault();
+								save_image('#gambar_c',<?php echo $data_pilgan['id_pilgan']?>,'image_c');
+							});
+							$("#audio_c<?php echo $data_pilgan['id_pilgan']?>").change(function() {
+        						//alert('changed!');
+								//e.preventDefault();
+								save_image('#audio_c',<?php echo $data_pilgan['id_pilgan']?>,'audio_c');
+							});
+														
+							$("#gambar_d<?php echo $data_pilgan['id_pilgan']?>").change(function() {
+        						//alert('changed!');
+								//e.preventDefault();
+								save_image('#gambar_d',<?php echo $data_pilgan['id_pilgan']?>,'image_d');
+							});
+							$("#audio_d<?php echo $data_pilgan['id_pilgan']?>").change(function() {
+        						//alert('changed!');
+								//e.preventDefault();
+								save_image('#audio_d',<?php echo $data_pilgan['id_pilgan']?>,'audio_d');
+							});
+														
+							$("#gambar_e<?php echo $data_pilgan['id_pilgan']?>").change(function() {
+        						//alert('changed!');
+								//e.preventDefault();
+								save_image('#gambar_e',<?php echo $data_pilgan['id_pilgan']?>,'image_e');
+							});
+							$("#audio_e<?php echo $data_pilgan['id_pilgan']?>").change(function() {
+        						//alert('changed!');
+								//e.preventDefault();
+								save_image('#audio_e',<?php echo $data_pilgan['id_pilgan']?>,'audio_e');
+							});
+
+							function save_image(form,id,pilihan){
+								console.log("a clik "+id);
+								var data = new FormData();
+								var form = $(form+id)[0].files[0];
+
+								// Create an FormData object 
+        						
+								data.append("fileupload",form);
+								data.append("file_name",id);
+								data.append("id_soal",id);
+								data.append("pilihan_upload",pilihan);
+								// If you want to add an extra field for the FormData
+        							$.ajax({
+         								url: "http://localhost/ujianonline/simpan_gambar_audio.php",
+   										type: "POST",
+   										data:  data,
+										   enctype: 'multipart/form-data',
+   										contentType: false,
+										   cache: false,
+										   processData:false,
+										   beforeSend : function(){
+											   $("#err").fadeOut();
+
+											   },
+											success: function(data){
+												//location.reload(forceGet);
+												console.log(JSON.parse(data).success);
+												if(JSON.parse(data).success){
+													alert("berhasil menambahkan");
+													window.location.reload(true);
+												}else{
+													alert("gagal silahkan coba lagi")
+												}
+												//window.location.reload(true);
+												},
+											error: function(e) {
+												console.log(e);
+												$("#err").html(e).fadeIn();
+											}
+									});
+
+							}
+						});
+					</script>
 					<?php
 					}
 				} else { ?>
@@ -231,7 +442,11 @@ if(@$_GET['hal'] == "pilgan") { ?>
 					</div>
 					<div class="col-md-10">
 						<div class="form-group">
-							<textarea name="pilA" class="form-control" rows="1" required><?php echo $data_pilgan_id['pil_a']; ?></textarea>
+							<div class="row">
+								<div class="col-md-6">
+								<textarea name="pilA" class="form-control" rows="1" required><?php echo $data_pilgan_id['pil_a']; ?></textarea>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="col-md-2">

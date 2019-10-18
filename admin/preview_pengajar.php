@@ -80,30 +80,48 @@
 						if($numrow > 1){
 							// Validasi apakah semua data telah diisi
 							$vnip = ( ! empty($nip))? "" : " style='background: #E07171;'"; // Jika NIS kosong, beri warna merah
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-							// $vnip = ( ! empty($nip))? "" : " style='background: #E07171;'";
-
-							// //Jika salah satu data ada yang kosong
-							// if($nip == ""
-							// or $ == ""
-							// or $j_a == ""
-							// or $j_b == ""
-							// or $j_c == ""
-							// or $j_d == ""
-							// or $j_e == ""
-							// or $kunci == ""
-							// or $gambar == ""){
-							// 	$kosong++; // Tambah 1 variabel $kosong
-							// }
+							$query = "INSERT INTO 
+				tb_pengajar 
+				(nip, 
+				nama_lengkap, 
+				tempat_lahir, 
+				tgl_lahir, 
+				jenis_kelamin, 
+				agama, 
+				no_telp, 
+				email, 
+				alamat,
+				jabatan,
+				foto,
+				web,
+				username,
+				password,
+				pass,
+				status
+				)
+				VALUES (
+				'".$nip."',
+				'".$nama_lengkap."',
+				'".$tempat_lahir."',
+				'".$tgl_lahir."',
+				'".$jenis_kelamin."',
+				'".$agama."',
+				'".$no_telp."',
+				'".$email."',
+				'".$alamat."',
+				'".$jabatan."',
+				'".$foto."',
+				'".$web."',
+				'".$username."',
+				'".md5($password)."',
+				'".$password."',
+				'".$status."'
+				)";
+	
+				// Eksekusi $query
+				mysqli_query($db, $query);
+			}
+	
 							
 							
 						}

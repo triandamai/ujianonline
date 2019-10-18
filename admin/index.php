@@ -141,9 +141,9 @@ if(@$_SESSION['admin'] || @$_SESSION['pengajar']) {
                     <li>
                         <a class="<?php if(@$_GET['page'] == 'quiz') { echo 'active-menu'; } ?>" href="?page=quiz"><i class="fa fa-bar-chart-o"></i> Manajemen Tugas / Quiz</a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a class="<?php if(@$_GET['page'] == 'materi') { echo 'active-menu'; } ?>" href="?page=materi"><i class="fa fa-qrcode"></i> Materi</a>
-                    </li>
+                    </li> -->
 					<li>
                         <a class="<?php if(@$_GET['page'] == 'nilai') { echo 'active-menu'; } ?>" href="?page=nilai"><i class="fa fa-qrcode"></i> Nilai</a>
                     </li>

@@ -13,7 +13,7 @@ $db = mysqli_connect("localhost", "root", "", "db_elearning");
     <link href="style/assets/css/style.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
+    <!-- <header>
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -21,7 +21,7 @@ $db = mysqli_connect("localhost", "root", "", "db_elearning");
                 </div>
             </div>
         </div>
-    </header>
+    </header> -->
 
     <div class="navbar navbar-inverse set-radius-zero">
         <div class="container">

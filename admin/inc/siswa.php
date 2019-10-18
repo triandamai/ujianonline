@@ -48,11 +48,11 @@ if(@$_GET['action'] == '') {
                                     <th>NIS</th>
                                     <th>Nama Lengkap</th>
                                     <th>Jenis Kelamin</th>
-                                    <th>Alamat</th>
-                                    <th>Kelas</th>
+                                    <!-- <th>Alamat</th> -->
+                                    <!-- <th>Kelas</th>
                                     <?php if(@$_SESSION[admin]) { ?>
                                         <th>Status</th>
-                                    <?php } ?>
+                                    <?php } ?> -->
                                     <th>Opsi</th>
                                 </tr>
                             </thead>
@@ -64,7 +64,8 @@ if(@$_GET['action'] == '') {
                             } else if(@$_GET['IDkelas'] != '') {
                                 $sql_siswa = mysqli_query($db, "SELECT * FROM tb_siswa JOIN tb_kelas ON tb_siswa.id_kelas = tb_kelas.id_kelas WHERE tb_siswa.status = 'aktif' AND tb_siswa.id_kelas = '$_GET[IDkelas]'") or die ($db->error);
                             }
-                            
+							//var_dump(mysqli_fetch_array($sql_siswa));
+							//die();
                             if(mysqli_num_rows($sql_siswa) > 0) {
     	                        while($data_siswa = mysqli_fetch_array($sql_siswa)) { ?>
     	                            <tr>
@@ -72,8 +73,8 @@ if(@$_GET['action'] == '') {
     	                                <td><?php echo $data_siswa['nis']; ?></td>
     	                                <td><?php echo $data_siswa['nama_lengkap']; ?></td>
     	                                <td><?php echo $data_siswa['jenis_kelamin']; ?></td>
-    	                                <td><?php echo $data_siswa['alamat']; ?></td>
-                                        <td align="center"><?php echo $data_siswa['nama_kelas']; ?></td>
+    	                                <!-- <td><?php echo $data_siswa['alamat']; ?></td> -->
+                                        <!-- <td align="center"><?php echo $data_siswa['nama_kelas']; ?></td>
                                         <?php if(@$_SESSION[admin]) { ?>
         	                                <td><?php echo ucfirst($data_siswa['status']); ?></td>
                                         <?php } ?>
@@ -83,7 +84,9 @@ if(@$_GET['action'] == '') {
                                                 <a onclick="return confirm('Yakin akan menghapus data ?');" href="?page=siswa&action=hapus&id=<?php echo $data_siswa['id_siswa']; ?>" class="badge" style="background-color:#f00;">Hapus</a>
                                             <?php } ?>
                                             <a href="?page=siswa&action=detail&IDsiswa=<?php echo $data_siswa['id_siswa']; ?>" class="badge">Detail</a>
-    	                                </td>
+    	                                </td> -->
+										<td>
+										opsi</td>
     	                            </tr>
     	                        <?php
     		                    }
@@ -337,7 +340,7 @@ if(@$_GET['action'] == '') {
 		<hr>
 
 	
-			<a href="http://localhost/ujianonline/admin/format/format_data_siswa.xlsx" class="btn btn-default">
+			<a href="http://localhost/ujianonline/format/format_data_siswa.xls" class="btn btn-default">
 				<span class="glyphicon glyphicon-download"></span>
 				Download Format
 			</a><br><br>
@@ -346,86 +349,17 @@ if(@$_GET['action'] == '') {
 			-- Buat sebuah input type file
 			-- class pull-left berfungsi agar file input berada di sebelah kiri
 			-->
-			<input id="file" type="file" name="file" class="pull-left">
+			<!-- <input id="file" type="file" name="file" class="pull-left">
 
 			<button id="preview" type="button" name="preview" class="btn btn-success btn-sm">
 				<span class="glyphicon glyphicon-eye-open"></span> Preview
-			</button>
-			<table class='table table-bordered'>
-				<tr>
-					<th colspan='6' class='text-center'>Preview Data</th>
-				</tr>
-				<tr>
-					<th>No</th>
-					<th>Nip</th>
-					<th>Nama Lengkap</th>
-					<th>Detail</th>
-					<th>Otorisasi</th>
-				</tr>
-				<tbody id="table">
-				</tbody>
-			</table>
-			<form id="hide" method="post" action="http://localhost/ujianonline/admin/import_siswa.php"><input type="hidden" name="id_tq" ><input type="hidden" name="import" value="ya"><button id="preview" type="submit" name="preview" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-eye-open"></span>Simpan</button></form>
-			<script type="text/javascript">
-			$(document).ready(function() {
+			</button> -->
 
-//DOM manipulation code
-$('#hide').hide();
-
-});
-			$('#preview').on('click',()=>{
-			//	$('#hide').hide();
-
-					var file_data = $('#file').prop('files')[0];
-					var form_data = new FormData();
-					form_data.append('file',file_data);
-					form_data.append('preview',"ya");
-					var html;
-					
-					var wadah = document.getElementById("#form");
-        
-					$.ajax({
-        					url: 'http://localhost/ujianonline/admin/preview_siswa.php', // point to server-side PHP script 
-        					dataType: 'text',  // what to expect back from the PHP script, if anything
-        					cache: false,
-        					contentType: false,
-        					processData: false,
-        					data: form_data,                         
-        					type: 'post',
-        			success: function(res){
-            			//alert(php_script_response);
-						console.log(res); // display response from the PHP script, if any
-						var data_json = JSON.parse(res);
-						console.log(JSON.parse(res));
-						if(JSON.parse(res).success == true){
-							$('#hide').show();
-							var i =1;
-							for(i = 1; i < JSON.parse(res).data.length ;i++){
-								
-									html +='<tr><td>No '+data_json.data[i].A+'</td>'+
-											'<td>'+data_json.data[i].B+'</td>'+
-						'<td>'+data_json.data[i].C+'</td>'+
-						'<td>Tempat/Tanggal Lahir :'+data_json.data[i].D+'/'+data_json.data[i].E+
-						'<br>Jenis Kelamin : '+data_json.data[i].F+'<br>'+
-						'Agama : '+data_json.data[i].G+
-						'<br> Nama Ayah : '+data_json.data[i].H+
-						'<br> Nama Ibu : '+data_json.data[i].I+
-						'<br> No Telp : '+data_json.data[i].J+
-						'<td> Email : '+data_json.data[i].K+
-						'<br>Status : '+data_json.data[i].Q+
-						'<br> Username : '+data_json.data[i].O+
-						'<br> Password : '+data_json.data[i].P+
-						'</td></tr>';	
-							}
-							
-							$('#table').append(html);
-					
-						}
-       				 }
-     				});
-				});
-			</script>
-		
+			<form method="post" enctype="multipart/form-data" action="./import_new_siswa.php">
+					Pilih File: 
+					<input name="files" type="file" > 
+					<input name="upload" type="submit" value="Import" class="btn btn-success btn-sm">
+				</form>
 
 		<hr>
 

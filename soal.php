@@ -208,8 +208,14 @@ if(@$_SESSION['siswa']) { ?>
                                                     <td>
 												
 													</td>
-                                                    <td v-if="this.currentSoal.gambar !== 'tidak'">
-                                                        <img width="220px" v-bind:src="'http://localhost/ujianonline/admin/img_soal/' + currentSoal.gambar" />
+                                                    <td v-if="this.currentSoal.gambar !== 'tidak' || this.currentSoal.gambar !== null">
+                                                        <img width="220px" v-bind:src="'http://localhost/ujianonline/img_soal/' + currentSoal.gambar" />
+                                                    </td>
+													<td v-else-if="this.currentSoal.gambar !== null">
+                                                        <img width="220px" v-bind:src="'http://localhost/ujianonline/img_soal/' + currentSoal.gambar" />
+                                                    </td>
+													<td v-else="this.currentSoal.gambar !== 'tidak' || this.currentSoal.gambar !== null">
+                                                        
                                                     </td>
                                                 </tr>
                                          
@@ -374,7 +380,7 @@ Vue.component('form-soal', {
 		.then(result => {
 			console.log(result);
 			localStorage.clear();
-			window.location.href = 'http://localhost/ujianonline/?page=quiz&action=infokerjakan&id_tq=68';
+			window.location.href = 'http://localhost/ujianonline/?page=quiz&action=infokerjakan&id_tq='+this.currentSoal.id_tq;
 		}).catch(err => {
 			console.log(err);
 		});
@@ -430,7 +436,7 @@ Vue.component('form-soal', {
 			this.data = response.data.data
 			this.currentSoal = response.data.data[0]
 			
-			//console.log(response.data.data);
+			console.log(response.data.data);
 			
             this.initJawaban();
 		

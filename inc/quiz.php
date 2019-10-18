@@ -59,6 +59,7 @@ if(@$_GET['action'] == '') { ?>
 					<?php
 					$id_mapel = @$_GET['id_mapel'];
 					$id_siswa = $_SESSION['siswa'];
+					
 					$sql_tq = mysqli_query($db, "SELECT * FROM tb_topik_quiz WHERE id_mapel = '$id_mapel' AND id_kelas = '$data_terlogin[id_kelas]' AND status = 'aktif'") or die ($db->error);
 				//	$sql_cek_sudah = mysqli_query($db,"SELECT * FROM tb_jawaban WHERE id_siswa='$id_siswa' AND id_mapel='$id_mapel'")or die ($db->error);
 					$countsoal = mysqli_num_rows($sql_tq);
@@ -161,7 +162,7 @@ if(@$_GET['action'] == '') { ?>
 					} else {
 						$sql_cek_soal_pilgan = mysqli_query($db, "SELECT * FROM tb_soal_pilgan WHERE id_tq = '$_GET[id_tq]'") or die ($db->error);
 						$sql_cek_soal_essay = mysqli_query($db, "SELECT * FROM tb_soal_essay WHERE id_tq = '$_GET[id_tq]'") or die ($db->error);
-						if(mysqli_num_rows($sql_cek_soal_pilgan) > 0 || mysqli_num_rows($sql_cek_soal_essay) > 0) { ?>
+						if(mysqli_num_rows($sql_cek_soal_pilgan) > 0) { ?>
 							<a href="soal.php?id_tq=<?php echo @$_GET['id_tq']; ?>" class="btn btn-primary">Mulai Mengerjakan</a>
 						<?php
 						} else { ?>

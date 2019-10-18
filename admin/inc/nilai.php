@@ -20,7 +20,7 @@ if(@$_GET['action'] == '') { ?>
 	                                <th>Kelas</th>
 	                                <th>Mapel</th>
 	                                <th>Tanggal Posting</th>
-	                                <th>Dikerjakan</th>
+									<th>Tidak dikejakan</th>
 	                                <th>Benar</th>
 	                                <th>Salah</th>
 									<th>Persentasi</th>
@@ -31,7 +31,65 @@ if(@$_GET['action'] == '') { ?>
 	                        $no = 1;
 	                        if(@$_SESSION[admin]) {
 		                        $sql_materi = mysqli_query($db, "SELECT * FROM tb_file_materi JOIN tb_kelas ON tb_file_materi.id_kelas = tb_kelas.id_kelas JOIN tb_mapel ON tb_file_materi.id_mapel = tb_mapel.id") or die($db->error);
-	                        } else if(@$_SESSION[pengajar]) {
+								
+								$sql_nilai = mysqli_query($db, "SELECT * FROM 
+								tb_nilai_pilgan 
+								INNER JOIN  
+								tb_siswa 
+								ON
+								tb_siswa.id_siswa = tb_nilai_pilgan.id_siswa
+								INNER JOIN
+								tb_topik_quiz 
+								ON
+								tb_topik_quiz.id_tq = tb_nilai_pilgan.id_tq"
+								) or die($db->error);
+								//echo json_encode(mysqli_fetch_array($sql_nilai));
+								// var_dump($sql_materi);
+								// die();
+								$query = mysqli_query($db,"SELECT * FROM tb_nilai_pilgan") or die($db->error);
+								if(mysqli_num_rows($query) > 0) {
+									while($data_nilai = mysqli_fetch_array($query)) {
+										?>
+										<tr>
+										<td>1</td>
+										<?php 
+									$q_siswa = mysqli_query($db,"SELECT * FROM tb_siswa WHERE id_siswa=".$data_nilai['id_siswa']) or die($db->error);
+										if(mysqli_num_rows($q_siswa)>0){
+											while($data_siswa = mysqli_fetch_array($q_siswa)){
+												?>
+												<td><?php echo $data_siswa['nama_lengkap']?></td>
+												<?php
+												$q_kelas = mysqli_query($db,"SELECT * FROM tb_kelas WHERE id_kelas=".$data_siswa['id_kelas']) or die($db->error);
+												if(mysqli_num_rows($q_kelas)>0){
+													while($data_kelas = mysqli_fetch_array($q_kelas)){
+														?>
+														<td><?php echo $data_kelas['nama_kelas']?></td>
+														<?php
+													}
+												}
+											}
+										}
+									$q_quiz = mysqli_query($db,"SELECT * FROM tb_topik_quiz WHERE id_tq=".$data_nilai['id_tq']) or die($db->error);
+										if(mysqli_num_rows($q_quiz)>0){
+											while($data_quiz = mysqli_fetch_array($q_quiz)){
+												?>
+												<td><?php echo $data_quiz['judul']?></td>
+												<td><?php echo $data_quiz['tgl_buat']?></td>
+												<?php
+											}
+										}
+									?>
+									<td><?php echo $data_nilai['benar']?></td>
+									<td><?php echo $data_nilai['salah']?></td>
+									<td><?php echo $data_nilai['tidak_dikerjakan']?></td>
+									<td><?php echo $data_nilai['presentase']?></td>
+									</tr>
+									<?php
+									}
+								} else {
+									echo '<tr><td colspan="9" align="center">Data tidak ditemukan</td></tr>';
+								}
+							} else if(@$_SESSION[pengajar]) {
 	                        	// $sql_materi = mysqli_query($db, "SELECT * FROM 
 								// tb_file_materi 
 								// JOIN 
@@ -41,54 +99,71 @@ if(@$_GET['action'] == '') { ?>
 								// JOIN tb_mapel 
 								// ON tb_file_materi.id_mapel = tb_mapel.id 
 								// WHERE pembuat = '$_SESSION[pengajar]'") or die($db->error);
-								$sql_nilai = mysqli_query($db, "SELECT * FROM 
-								tb_nilai_pilgan 
-								JOIN 
-								tb_siswa 
-								ON 
-								tb_nilai_pilgan.id_siswa = tb_siswa.id_siswa 
-								JOIN 
-								tb_topik_quiz 
-								ON 
-								tb_nilai_pilgan.id_tq = tb_topik_quiz.id_tq 
+								$pengajar = $_SESSION['pengajar'];
+								// $sql_nilai = mysqli_query($db, "SELECT * FROM 
+								// tb_nilai_pilgan 
+								// INNER JOIN  
+								// tb_siswa 
+								// WHERE
+								// tb_nilai_pilgan.id_siswa = tb_siswa.id_siswa 
+								// INNER JOIN
+								// tb_topik_quiz 
+								// WHERE
+								// tb_nilai_pilgan.id_tq = tb_topik_quiz.id_tq 
 								
-								WHERE pembuat = '$_SESSION[pengajar]'") or die($db->error);
-								// var_dump($sql_materi);
+								// WHERE tb_topik_quiz.pembuat = 95") or die($db->error);
+								
 								// json_encode($sql_materi);
 							//	echo json_encode(mysqli_fetch_array($sql_nilai));
-							}
-	                        if(mysqli_num_rows($sql_nilai) > 0) {
-	                        	while($data_nilai = mysqli_fetch_array($sql_nilai)) { ?>
-								<!-- <?php echo $data_nilai['nama_lengkap']; ?> -->
-									 <tr>
-										<td align="center"><?php echo $no++; ?></td>
-										<td><?php echo $data_nilai['nama_lengkap']; ?></td>
-										<td><?php echo $data_nilai['id_kelas']; ?></td>
-										<td><?php echo $data_nilai['id_mapel']; ?></td>
-										<td><?php echo $data_nilai['tgl_mulai']; ?></td>
-										<td><?php echo $data_nilai['tgl_akhir']; ?></td>
-										<!-- <td>
-											<!-- <?php
-											if($data_materi['pembuat'] == 'admin') {
-												echo "Admin";
-											} else {
-												$sql_pengajar = mysqli_query($db, "SELECT * FROM tb_pengajar WHERE id_pengajar = '$data_materi[pembuat]'") or die($db->error);
-												$data_pengajar = mysqli_fetch_array($sql_pengajar);
-												echo $data_pengajar['nama_lengkap'];
-											} ?> 
-										</td> -->
-										<td><?php echo $data_nilai['tidak_dikerjakan']; ?></td>
-										<td><?php echo $data_nilai['tidak_dikerjakan']; ?></td>
-										<td><?php echo $data_nilai['tidak_dikerjakan']; ?></td>
-										<!-- <td align="center">
-	                                        <a onclick="return confirm('Yakin akan menghapus data?');" href="?page=materi&action=hapus&IDmateri=<?php echo $data_materi['id_materi']; ?>" class="btn btn-danger btn-xs">Hapus</a>
-                                        </td> -->
-									</tr> 
+							$query = mysqli_query($db,"SELECT * FROM tb_topik_quiz WHERE pembuat=$pengajar") or die($db->error);
+							if(mysqli_num_rows($query) > 0) {
+	                        	while($data_quiz = mysqli_fetch_array($query)) {
+									?>
+									
+									<?php
+									$sql_nilai = mysqli_query($db,"SELECT * FROM tb_nilai_pilgan WHERE id_tq=".$data_quiz['id_tq']) or die($db->error);
+									if(mysqli_num_rows($sql_nilai )>0){
+										while($data_nilai = mysqli_fetch_array($sql_nilai)){
+											?>
+											<tr>
+											<td>1</td>
+											<?php
+												$q_siswa = mysqli_query($db,"SELECT * FROM tb_siswa WHERE id_siswa=".$data_nilai['id_siswa']) or die($db->error);
+												if(mysqli_num_rows($q_siswa)>0){
+													while($data_siswa = mysqli_fetch_array($q_siswa)){
+														?>
+														<td><?php echo $data_siswa['nama_lengkap']?></td>
+														<?php
+														$q_kelas = mysqli_query($db,"SELECT * FROM tb_kelas WHERE id_kelas=".$data_siswa['id_kelas']) or die($db->error);
+														if(mysqli_num_rows($q_kelas)>0){
+															while($data_kelas = mysqli_fetch_array($q_kelas)){
+																?>
+																<td><?php echo $data_kelas['nama_kelas']?></td>
+																<?php
+															}
+														}
+													}
+												}
+											?>
+											<td><?php echo $data_quiz['judul']?></td>
+											<td><?php echo $data_quiz['tgl_buat']?></td>
+											<td><?php echo $data_nilai['benar']?></td>
+											<td><?php echo $data_nilai['salah']?></td>
+											<td><?php echo $data_nilai['tidak_dikerjakan']?></td>
+											<td><?php echo $data_nilai['presentase']?></td>
+											</tr>
+											<?php
+										}
+									}
+									?>
+		
 								<?php
 	                        	}
 	                        } else {
 	                        	echo '<tr><td colspan="9" align="center">Data tidak ditemukan</td></tr>';
-	                        } ?>
+	                        }
+							}
+	                         ?>
 	                        </tbody>
 	                    </table>
 	                    <script>
