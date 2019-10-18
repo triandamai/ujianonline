@@ -60,15 +60,12 @@ if(@$_GET['action'] == '') {
                             <?php
 
                             if(@$_GET['IDkelas'] == '') {
-                                $sql_siswa = mysqli_query($db, "SELECT * FROM tb_siswa JOIN tb_kelas ON tb_siswa.id_kelas = tb_kelas.id_kelas WHERE tb_siswa.status = 'aktif'") or die ($db->error);
-                            } else if(@$_GET['IDkelas'] != '') {
-                                $sql_siswa = mysqli_query($db, "SELECT * FROM tb_siswa JOIN tb_kelas ON tb_siswa.id_kelas = tb_kelas.id_kelas WHERE tb_siswa.status = 'aktif' AND tb_siswa.id_kelas = '$_GET[IDkelas]'") or die ($db->error);
-                            }
-							//var_dump(mysqli_fetch_array($sql_siswa));
-							//die();
-                            if(mysqli_num_rows($sql_siswa) > 0) {
-    	                        while($data_siswa = mysqli_fetch_array($sql_siswa)) { ?>
-    	                            <tr>
+								//$sql_siswa = mysqli_query($db, "SELECT * FROM tb_siswa JOIN tb_kelas ON tb_siswa.id_kelas = tb_kelas.id_kelas WHERE tb_siswa.status = 'aktif'") or die ($db->error);
+								$sql_siswa = mysqli_query($db,"SELECT * FROM tb_siswa") or die();
+								if(mysqli_num_rows($sql_siswa) > 0){
+									while($data_siswa = mysqli_fetch_array($sql_siswa)){
+										?>
+											<tr>
     	                                <td align="center"><?php echo $no++; ?></td>
     	                                <td><?php echo $data_siswa['nis']; ?></td>
     	                                <td><?php echo $data_siswa['nama_lengkap']; ?></td>
@@ -88,6 +85,57 @@ if(@$_GET['action'] == '') {
 										<td>
 										opsi</td>
     	                            </tr>
+										<?php
+									}
+								}else{
+									?>
+    							<tr>
+                                    <td colspan="8" align="center">Data tidak ditemukan</td>
+    							</tr>
+    		                	<?php
+								}
+                            } else if(@$_GET['IDkelas'] != '') {
+                                //$sql_siswa = mysqli_query($db, "SELECT * FROM tb_siswa JOIN tb_kelas ON tb_siswa.id_kelas = tb_kelas.id_kelas WHERE tb_siswa.status = 'aktif' AND tb_siswa.id_kelas = '$_GET[IDkelas]'") or die ($db->error);
+								$sql_siswa = mysqli_query($db,"SELECT * FROM tb_siswa WHERE id_kelas=".$_GET['IDkelas']) or die();
+								if(mysqli_num_rows($sql_siswa)>0){
+									while($data_siswa =mysqli_fetch_array($sql_siswa)){
+										?>
+											<tr>
+    	                                <td align="center"><?php echo $no++; ?></td>
+    	                                <td><?php echo $data_siswa['nis']; ?></td>
+    	                                <td><?php echo $data_siswa['nama_lengkap']; ?></td>
+    	                                <td><?php echo $data_siswa['jenis_kelamin']; ?></td>
+    	                                <!-- <td><?php echo $data_siswa['alamat']; ?></td> -->
+                                        <!-- <td align="center"><?php echo $data_siswa['nama_kelas']; ?></td>
+                                        <?php if(@$_SESSION[admin]) { ?>
+        	                                <td><?php echo ucfirst($data_siswa['status']); ?></td>
+                                        <?php } ?>
+    	                                <td align="center">
+                                            <?php if(@$_SESSION[admin]) { ?>
+        	                                    <a href="?page=siswa&action=nonaktifkan&id=<?php echo $data_siswa['id_siswa']; ?>" class="badge" style="background-color:#f60;">Non aktifkan</a>
+                                                <a onclick="return confirm('Yakin akan menghapus data ?');" href="?page=siswa&action=hapus&id=<?php echo $data_siswa['id_siswa']; ?>" class="badge" style="background-color:#f00;">Hapus</a>
+                                            <?php } ?>
+                                            <a href="?page=siswa&action=detail&IDsiswa=<?php echo $data_siswa['id_siswa']; ?>" class="badge">Detail</a>
+    	                                </td> -->
+										<td>
+										opsi</td>
+    	                            </tr>
+								<?php
+									}
+								}else{
+									?>
+							<tr>
+								<td colspan="8" align="center">Data tidak ditemukan</td>
+							</tr>
+							<?php
+								}
+								
+							}
+							//var_dump(mysqli_fetch_array($sql_siswa));
+							//die();
+                            if(mysqli_num_rows($sql_siswa) > 0) {
+    	                        while($data_siswa = mysqli_fetch_array($sql_siswa)) { ?>
+    	                            
     	                        <?php
     		                    }
     		                } else { ?>
